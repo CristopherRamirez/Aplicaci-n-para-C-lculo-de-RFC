@@ -1,0 +1,56 @@
+#include <iostream>
+#include <cctype>
+#include <string>
+#include <iomanip>
+
+using namespace std;
+
+// Función para encontrar la primera vocal en un string
+char primeraVocal(const string &apellido) {
+    for (size_t i = 1; i < apellido.length(); ++i) {
+        char c = tolower(apellido[i]);
+        if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {
+            return toupper(apellido[i]);
+        }
+    }
+    return 'X'; // En caso de que no se encuentre ninguna vocal, aunque es raro
+}
+
+int main() {
+    string apellidoPaterno, apellidoMaterno, nombre;
+    int anio, mes, dia;
+    char rfc[14] = {0}; // Inicializar con ceros
+
+    // Pedir al usuario los datos
+    cout << "Ingrese el apellido paterno: ";
+    cin >> apellidoPaterno;
+
+    cout << "Ingrese el apellido materno (si no tiene, ingrese una X): ";
+    cin >> apellidoMaterno;
+
+    cout << "Ingrese el primer nombre: ";
+    cin >> nombre;
+
+    cout << "Ingrese el año de nacimiento (YYYY): ";
+    cin >> anio;
+
+    cout << "Ingrese el mes de nacimiento (MM): ";
+    cin >> mes;
+
+    cout << "Ingrese el día de nacimiento (DD): ";
+    cin >> dia;
+
+    // Calcular el RFC
+    rfc[0] = toupper(apellidoPaterno[0]); // Primera letra del apellido paterno
+    rfc[1] = primeraVocal(apellidoPaterno); // Primera vocal del apellido paterno
+    rfc[2] = toupper(apellidoMaterno[0] != 'X' ? apellidoMaterno[0] : 'X'); // Primera letra del apellido materno o 'X'
+    rfc[3] = toupper(nombre[0]); // Inicial del primer nombre
+    
+    // Añadir fecha de nacimiento
+    sprintf(rfc + 4, "%02d%02d%02d", anio % 100, mes, dia);
+
+    // Mostrar el RFC
+    cout << "Su RFC es: " << rfc << endl;
+
+    return 0;
+}
